@@ -1,5 +1,11 @@
 const {model, Schema } = require('mongoose')
-
+// {
+//     "education":[{"start":{"month":"Apr","year":2003},"end":{"month":"Mar","year":2016},"collegeName":"ris malad","performance":{"performanceScale":"percentage","value":90}}, {"start":{"month":"Jun","year":2016},"end":{"month":"Jun","year":2018},"collegeName":"pace college","performance":{"performanceScale":"percentage","value":74}},{"start":{"month":"Aug","year":2018},"end":{"month":"May","year":2022},"collegeName":"tsec","performance":{"performanceScale":"cgpa(/10)","value":9.19}}],
+//     "experience": [{"start":{"month":"Jul","year":2020},"end":{"month":"Aug","year":2020},"companyName":"kohli media"},{"start":{"month":"Dec","year":2019},"end":{"month":"Feb","year":2020},"companyName":"mta intro js"}],
+//     "project": [{"start":{"month":"Jul","year":2020},"end":{"month":"Aug","year":2020},"name":"kohli media"},{"start":{"month":"Dec","year":2019},"end":{"month":"Feb","year":2020},"name":"mta intro js"}],
+//     "skill": ["HTML","CSS","JS"],
+//     "certificate":[{"start":{"month":"Jul","year":2020},"end":{"month":"Aug","year":2020},"name":"kohli media"},{"start":{"month":"Dec","year":2019},"end":{"month":"Feb","year":2020},"name":"mta intro js"}]
+// }
 const dateSchema = new Schema({
     month: {
         type: String,
@@ -11,7 +17,10 @@ const dateSchema = new Schema({
         min: 1950,
         max: 2050
     }
+},{
+    _id:false
 })
+
 
 
 const performanceSchema = new Schema({
@@ -22,7 +31,8 @@ const performanceSchema = new Schema({
 	}
 },
 {
-	discriminatorKey: 'performanceScale'
+	discriminatorKey: 'performanceScale',
+    _id:false
 })
 
 const portfolioSchema = new Schema({
@@ -45,9 +55,8 @@ const portfolioSchema = new Schema({
                     type: performanceSchema,
                     required: true
                 }
-            }
-        ],
-        required: true
+            },            
+        ]
     },
     experience: {
         type: [{
@@ -63,8 +72,7 @@ const portfolioSchema = new Schema({
                 type: String,
                 required: true
             }
-        }],
-        required: true
+        }]
     },
     project: {
         type: [{
@@ -80,16 +88,15 @@ const portfolioSchema = new Schema({
                 type: String,
                 required: true
             },
-        }],
-        required: true
+        }]
     },
-    skills: {
+    skill: {
         type: [{
                 type:String,
                 required: true
             }]
     },
-    certificates: {
+    certificate: {
         type: [{
             start: {
                 type: dateSchema,
@@ -103,12 +110,13 @@ const portfolioSchema = new Schema({
                 type: String,
                 required: true
             },
-        }],
-        required: true
+        }]
     }
+},{
+    collection: 'portfolio'         
 })
 
-portfolioSchema.path('education').path('performance').discriminator('percentage', new Schema({
+portfolioSchema.path('education.performance').discriminator('percentage', new Schema({
 	value: {
 		type: Number,
 		min:0,
@@ -116,7 +124,7 @@ portfolioSchema.path('education').path('performance').discriminator('percentage'
 	}
 }))
 
-portfolioSchema.path('education').path('performance').discriminator('cgpa(/10)', new Schema({
+portfolioSchema.path('education.performance').discriminator('cgpa(/10)', new Schema({
 	value: {
 		type: Number,
 		min:0,
@@ -124,10 +132,13 @@ portfolioSchema.path('education').path('performance').discriminator('cgpa(/10)',
 	}
 }))
 
-portfolioSchema.path('education').path('performance').discriminator('cgpa(/4)', new Schema({
+portfolioSchema.path('education.performance').discriminator('cgpa(/4)', new Schema({
 	value: {
 		type: Number,
 		min:0,
 		max:4
 	}
 }))
+
+const Portfolio = new model('portfolio', portfolioSchema)
+module.exports = { Portfolio }

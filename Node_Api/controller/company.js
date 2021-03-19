@@ -1,4 +1,7 @@
 const { Company } = require('../model/company');
+const { Job } = require('../model/job');
+const { Application } = require('../model/application');
+const mongoose = require('mongoose');
 const {genSaltSync, hashSync} = require('bcrypt')
 
 const hashPassword = function (password) {
@@ -74,7 +77,13 @@ module.exports.updateCompany = async(req, res)=>{
 module.exports.deleteCompany = async(req, res)=>{
     try{
         const id = req.params.id;
+        const objectId = mongoose.Types.ObjectId(id);
         await Company.findByIdAndDelete(id);
+        const jobs = await Job.find({company: objectId});
+        jobs.forEach(async({_id}) => {
+            await Application.deleteMany({appliedTo: _id})
+        }); 
+        await Job.deleteMany({company: objectId});
         res.json(null)
     }catch(err){
         res.status(500).json(err.message)

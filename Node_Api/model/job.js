@@ -1,5 +1,7 @@
 const { Schema, model } = require('mongoose')
-
+// {
+//     "name":"abcd","jobtype":"abce","vacancy":7,"start":"2020/03/05","end":"2020/03/11","description":{"skills":["HTML","CSS"],"duration":"1 month","pay":{"amount":"Rs4000","pay_freq":"Month"}}
+// }
 const jobSchema = new Schema({
     name: {
         type: String,
@@ -52,7 +54,7 @@ const jobSchema = new Schema({
         }
     }
 }, {
-    collection: 'Job'
+    collection: 'job'
 })
 
 const Job = new model('job', jobSchema);

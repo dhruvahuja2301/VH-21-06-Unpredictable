@@ -24,6 +24,6 @@ const applicationSchema = new Schema({
     collection: 'application'
 })
 
-const application = new model('application', applicationSchema);
+const Application = new model('application', applicationSchema);
 
-module.expports = { application }
+module.exports = { Application }

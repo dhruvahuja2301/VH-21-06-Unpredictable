@@ -14,6 +14,10 @@ db.once('open', function() {
 mongoose.set('useFindAndModify', false);
 
 app.use('/company', require('./routes/company'))
+app.use('/user', require('./routes/user'))
+app.use('/portfolio', require('./routes/portfolio'))
+app.use('/job', require('./routes/job'))
+app.use('/application', require('./routes/application'))
 
 const PORT =  4000;
 app.listen(PORT, () =>    {

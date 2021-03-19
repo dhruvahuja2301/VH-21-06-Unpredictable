@@ -1,3 +1,4 @@
+const {isEmail} = require('validator')
 const { Schema, model } = require('mongoose');
 const {genSaltSync, hashSync, compare} = require('bcrypt')
 
@@ -21,10 +22,9 @@ const userSchema = new Schema({
     },
     email: {
         type: String,
-        validate: (value) => {
-            const re =  '/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/';  
-            return re.test(value.toLowerCase())  
-        },
+        validate:[isEmail
+            // (val)=>{return true or false by matching val to regex}
+            ,'Please enter valid email'],
         required: true
     },
     phoneNumber: {
@@ -65,6 +65,6 @@ userSchema.statics.login = async function(email, password) {
     throw Error("Incorrect Email or password");
 }
 
-const user = new model('user', userSchema);
+const User = new model('user', userSchema);
 
-module.exports = { user }
+module.exports = { User }
