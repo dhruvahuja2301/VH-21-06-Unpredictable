@@ -1,0 +1,19 @@
+{
+    "name": "JobHunt",
+    "version": "1.0.0",
+    "description": "Desktop application for Finding Jobs",
+    "main": "main.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "electron .",
+        "package-mac": "electron-packager . JobHunt --overwrite --platform=darwin --arch=x64 --icon=assets/icons/mac/icon.icns --prune=true --out=release-builds",
+        "package-win": "electron-packager . JobHunt --overwrite --no-asar --platform=win32 --arch=ia32 --icon=assets/icons/win/icon.ico --prune=true --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"Traffic Sign Classifier\"",
+        "package-linux": "electron-packager . JobHunt --overwrite --asar=true --platform=linux --arch=x64 --icon=assets/icons/png/icon.png --prune=true --out=release-builds"
+    },
+    "author": "Ruben Dsouza,Ahmed Khan,Bhavesh Kataria,Dhruv Ahuja",
+    "license": "ISC",
+    "devDependencies": {
+        "electron-packager": "^15.2.0",
+        "electron": "^11.3.0"
+    }
+}
